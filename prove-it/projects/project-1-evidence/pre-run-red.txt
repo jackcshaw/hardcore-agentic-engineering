@@ -1,0 +1,13 @@
+$ cd prove-it/working
+$ node --test test/session-record.test.mjs
+
+Local absolute path redacted from the Node error below; module and test paths are unchanged.
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'working/src/session-record.mjs' imported from working/test/session-record.test.mjs
+
+✖ test/session-record.test.mjs
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+
+Exit status: 1

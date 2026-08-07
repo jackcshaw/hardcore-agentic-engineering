@@ -1,0 +1,26 @@
+# Operator-authored Done Contract. Fix and pin this file before the worker starts.
+outcome: a new session record stores the exact seed used at start, legacy records remain unchanged without invented provenance, and the named check passes
+candidate_dir: ../working
+protect:
+  - ../working/test/session-record.test.mjs
+checks:
+  - command: node --test test/session-record.test.mjs
+    expect_exit: 0
+runtime_observation:
+  - mutating the source seed after session creation does not change the seed_snapshot persisted in meta.json
+must_change:
+  - ../working/src/session-record.mjs
+must_not_change:
+  - ../working/test/session-record.test.mjs
+  - ../working/src/slugify.mjs
+  - ../working/test/slugify.test.mjs
+  - ../evidence/00-baseline/
+  - ../projects/project-1-contract.yaml
+budgets:
+  attempts: 3
+  elapsed_minutes: 30
+stop_and_ask:
+  - any plan reads or copies a real student session artifact
+  - any plan reconstructs a missing historical snapshot from a current seed
+  - any need to edit the protected test, fixed contract, baseline, or slugify fixture
+release_owner: human

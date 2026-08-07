@@ -1,0 +1,1 @@
+{"id":1,"run":"p1-session-evidence","ts":"2026-08-07T16:48:36.077Z","type":"run.requested","actor":"operator","data":{"contract_path":"projects/project-1-contract.yaml","contract_sha256":"ba0b862bb1655d1a8bdff791f302dcfb8dc53e65ae103b0793aa1741334cd160","candidate_tree":"tree:4de2c0b8f48dec5debce5987ea24a93eb06113d5890e45615cc552ca61fdd454","attempts":3}}
