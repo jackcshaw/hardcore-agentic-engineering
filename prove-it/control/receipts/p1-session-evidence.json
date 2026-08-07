@@ -1,0 +1,18 @@
+{
+  "run_id": "p1-session-evidence",
+  "contract_sha256": "ba0b862bb1655d1a8bdff791f302dcfb8dc53e65ae103b0793aa1741334cd160",
+  "check_version": "protect",
+  "candidate_tree": "tree:6cd04ba653de1f90b0df7a943b9ec47cb63ea37aa6eea7a7552f9d585b20e54b",
+  "protected": {
+    "../working/test/session-record.test.mjs": "e11a7a3ddfbde84618bf36848c6c07a37cc4a677effb16d77d7ba37e14443b0e"
+  },
+  "checks": [
+    {
+      "command": "node --test test/session-record.test.mjs",
+      "exit": 0,
+      "expected": 0
+    }
+  ],
+  "issued_at": "2026-08-07T17:45:29.991Z",
+  "sig": "f589f6f4799972d38aa2f1bcbb8611bfb362bc9f5d7d7877bae3161ad3e2a5b9"
+}

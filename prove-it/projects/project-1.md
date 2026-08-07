@@ -12,12 +12,18 @@ The operator watched the named check fail before implementation and opened the h
 
 ## The cold-start brief I gave the agent
 
-The fresh agent receives only the [`goal`](project-1-goal.md) and [`rider`](project-1-rider.md). The rider carries the operator-only fact that these records are evidence of student learning and judgment, so absent historical provenance must remain unknown rather than be reconstructed. The [`bet card`](project-1-bet-card.md) states the expected first action and interrupt signal.
+The fresh agent was instructed to use only the [`goal`](project-1-goal.md) and [`rider`](project-1-rider.md). The rider carries the operator-only fact that these records are evidence of student learning and judgment, so absent historical provenance must remain unknown rather than be reconstructed. The [`bet card`](project-1-bet-card.md) states the expected first action and interrupt signal.
+
+The saved agent log shows that the worker also consulted Codex memory and a prior course rollout summary. The intended brief was cold; the observed information boundary was not.
 
 ## What the first run actually did
 
-Pending the cold-start worker run. Its first action, any interrupt, the implementation result, and the independent gate result will be recorded in [`project-1-evidence/first-run.md`](project-1-evidence/first-run.md).
+The [`first-run evidence`](project-1-evidence/first-run.md) and [`worker agent log`](project-1-evidence/worker-agent-log.md) record the trajectory. The worker proposed a plan before editing, preserved missing provenance as unknown, changed only the allowed module, and got three protected tests green. I did not interrupt its extra memory access.
+
+The independent gate later accepted the fixed contract and unchanged protected test, issued a signed receipt, and the harness verified completion. This proves the contracted candidate passed; it does not prove the goal and rider were the worker's only context.
 
 ## The doubt I still have
 
 The protected check proves the semantics of a small, synthetic file-backed module. It does not prove that GAiDFLY's current session and debrief routes use that module, nor does it prove privacy, authorization, transcript immutability, or the quality of the student's judgment.
+
+The run also exposed a control gap: a fresh task can still import durable memory outside its supplied brief. I therefore cannot claim this run proves that the goal and rider alone were sufficient, even though the resulting software passed its independent gate.

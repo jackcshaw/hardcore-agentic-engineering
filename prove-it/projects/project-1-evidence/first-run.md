@@ -16,16 +16,24 @@ The independent gate also ran before implementation and truthfully refused the c
 
 ## First cold-start action
 
-Pending: paste the fresh worker's first tool action or plan here before implementation.
+The complete privacy-safe transcription is [`worker-agent-log.md`](worker-agent-log.md).
+
+The worker first announced that it would read the two brief files and repository instructions. Its first tool command also attempted to search Codex memory. The chained command stopped before those reads, but the next tool action explicitly read the goal, rider, Codex memory, and a prior course rollout summary.
+
+This did not match the intended `goal + rider only` information boundary.
 
 ## Operator interrupt or approval
 
-Pending: record whether the first plan respected the operator-only fact. If not, record the one-sentence correction and the revised rider/run.
+The plan itself respected the expected route: one implementation file, no legacy backfill, no invented provenance, and the protected check unchanged. The operator approved it with `do it`; no interrupt occurred.
+
+In retrospect, the operator should have interrupted on the extra memory access. The bet card predicted application-level wrong premises but did not name context expansion as an interrupt signal.
 
 ## Worker result
 
-Pending: record the worker's exact check command, exit status, and claimed result.
+The worker created only [`session-record.mjs`](../../working/src/session-record.mjs), ran `node --test test/session-record.test.mjs` from `prove-it/working`, and reported exit 0 with three passes and no failures or skips. It correctly left release to the gate and named GAiDFLY integration as the remaining blind spot.
 
 ## Independent gate result
 
-Pending: link the gate output and receipt after the candidate is checked.
+The operator reran the named check independently: three passed. The gate then accepted the unchanged protected test and fixed contract, issued [`p1-session-evidence.json`](../../control/receipts/p1-session-evidence.json), and the harness recorded completion in [`events.jsonl`](../../runs/p1-session-evidence/events.jsonl). The retained gate output is [`check-output.txt`](../../runs/p1-session-evidence/check-output.txt).
+
+The receipt proves the contracted software result for candidate tree `tree:6cd04ba653de1f90b0df7a943b9ec47cb63ea37aa6eea7a7552f9d585b20e54b`. It does not cure the contaminated cold-start trajectory; the gate result and agent log answer different questions.
