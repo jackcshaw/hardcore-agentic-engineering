@@ -46,6 +46,14 @@ The path rules, exactly:
 - Leave both keys out and nothing changes: the contract gates `working/` exactly
   as before.
 
+Checks communicate through process exit status, not words in their output. The
+status in `expect_exit` means the contract clause is satisfied. This can be `1`
+for a check that proves a baseline is red. A check that cannot reach a verdict
+must exit `2`; the harness records it as `inconclusive` and the gate refuses it.
+Exit `2` is reserved, so do not use it as `expect_exit`. Any other unexpected
+status is `failed`. Stdout and stderr are retained as evidence, but they do not
+decide the result.
+
 `protect` does for your repo what `control/checks/manifest.json` does for the
 fixture: it pins the tests so the worker cannot pass by weakening them. Protect
 your test files, not your source — the source is supposed to change.
@@ -55,11 +63,48 @@ ships `control/gate.key` so the fixture works on day one, and a shared key
 signs receipts anyone could forge:
 
 ```sh
-head -c 64 /dev/urandom | xxd -p -c 64 > control/gate.key
+openssl rand -hex 64 > control/gate.key
 ```
 
 Do this once, before the first ported run. The gate will not verify receipts
 signed by the old key, so a late swap orphans every receipt you already earned.
+
+## What counts as your code
+
+The gate fingerprints your repository at `open` and again at `check`, so a
+receipt can say *this* code passed rather than *something in that folder*
+passed. It counts the files git knows about: everything tracked, plus new files
+you have not committed yet. Anything `.gitignore` excludes does not count.
+
+That matters because a repository holds more than your code, and the extra
+files change on their own:
+
+| Language | What else lives in the folder |
+|---|---|
+| Python | `__pycache__/`, `.pytest_cache/`, `.venv/` |
+| R | `.Rproj.user/`, `.Rhistory`, `renv/library/` |
+| JavaScript | `node_modules/`, `dist/` |
+
+`.Rproj.user/` is the sharpest case: RStudio rewrites it as you move around the
+editor, with no command run at all. Before this rule, having your editor open
+was enough to stale a receipt while your code sat untouched.
+
+**The thirty-second check, worth doing before your first ported run.** Run your
+check command twice, then:
+
+```sh
+git status --porcelain --ignored
+```
+
+Anything listed is written by your own toolchain. Ignored entries are now
+harmless. Anything *not* ignored is part of your candidate, so decide
+deliberately whether it belongs there.
+
+Two notes. If your candidate is not a git repository, the gate falls back to
+hashing every file in the directory, and the thirty-second check above is the
+only way to see what will move. And every receipt records which method produced
+it, so receipts you earned before this rule existed keep verifying exactly as
+they did, and a run you have already opened finishes the way it started.
 
 ## The three commands
 
@@ -123,6 +168,8 @@ only then — records the run as completed.
 - Edit the contract after open: `contract hash mismatch` — no moved goalposts.
 - Edit a protected test: `protected check target modified` — no weakened checks.
 - `|| true` and friends in a check command: `suppressed check` — no muzzled checks.
+- A check that cannot decide exits `2`: `check inconclusive` — no green receipt
+  for an abstention.
 - Edit the candidate after the receipt: `receipt stale: candidate tree mismatch` —
   rerun `check`; the new receipt binds the new tree.
 - Write your own receipt: `not issued by this gate` — no signature, no completion.
