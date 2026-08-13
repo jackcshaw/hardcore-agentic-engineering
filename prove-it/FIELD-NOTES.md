@@ -45,11 +45,11 @@ Fill one entry the week you do the session.
 
 ### S3 — Control plane → `<repo>`
 
-- Task:
-- What transferred cleanly:
-- What differed in my environment:
-- Observation:
-- Retained change:
+- External action: create one immutable academic session record
+- Stable request ID: `session-record:create:session-new`
+- Retry rule: reuse the same ID and inspect the stored record before retrying
+- New-submission rule: assign a new record identity; never overwrite the earlier record
+- Uncertain state: a missing or malformed `meta.json` after directory creation is `in_doubt`
 
 ### S4 — Attack the gate → `<repo>`
 
