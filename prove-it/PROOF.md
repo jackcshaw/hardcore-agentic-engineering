@@ -41,8 +41,8 @@ Gate evidence for that contract and checked code — receipt or truthful refusal
 |---|---|---|
 | Define | Here was my definition of done; here is the attack on it and what I changed | |
 | Brief | Here is what I told a fresh agent — the context, the limits, the stop conditions; here is what it did first | |
-| Operate | Here was the surprise; here is the control decision and why | |
-| Verify | Here is the wrong result turning red; here is the check result; here is the blind spot | |
+| Operate | The worker used memory outside the brief. I kept the valid software result, refused the cold-start claim, and reran with memory disabled. | [Controlled memory-boundary rerun](projects/project-2-evidence/controlled-rerun.md) |
+| Verify | A seed change during the first file-system wait passed the weak check. The stronger check failed on the wrong result and passed after the fix. It does not cover a crash before `meta.json` is durable. | [Project 2 verification](projects/project-2.md#the-case-i-made-wrong-on-purpose) |
 | Compound | Here is the one change I kept; here is the later run it improved | |
 
 Run shape (how many agents worked, how they connected, and the problem that required that shape):
