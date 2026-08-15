@@ -22,6 +22,14 @@ could produce the implementation from red.
 
 ## The case I made wrong on purpose
 
+In this module, the seed is the assignment configuration for a session. The
+session record must preserve the seed version that was present when record
+creation began. This version identifies the assignment state associated with
+the student's work. If the seed changes during a file-system wait, the old
+code can store the later version instead. This test covers capture time in the
+small module. It does not prove which assignment version a real GAiDFLY
+interface showed to a student.
+
 I called `createSessionRecord`, then changed the supplied seed while its first
 filesystem operation was still pending. The implementation captured the later
 assignment text in `seed_snapshot`. The old test still passed because it only
