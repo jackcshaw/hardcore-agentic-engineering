@@ -50,6 +50,25 @@ test('a new session preserves the exact seed used at session start', async () =>
   assert.equal(stored.started_at, '2026-08-07T12:00:00Z');
 });
 
+test('a session captures its seed before the first asynchronous gap', async () => {
+  const rootDir = await temporaryRoot();
+  const seed = exampleSeed();
+  const expectedSnapshot = structuredClone(seed);
+
+  const creating = createSessionRecord({
+    rootDir,
+    sessionId: 'session-concurrent',
+    metadata: { student_id: 'student-synthetic', started_at: '2026-08-07T12:00:00Z' },
+    seed,
+  });
+
+  seed.case_text = 'The assignment changed while the session record was being created.';
+  await creating;
+
+  const stored = JSON.parse(await readFile(join(rootDir, 'session-concurrent', 'meta.json'), 'utf8'));
+  assert.deepEqual(stored.seed_snapshot, expectedSnapshot);
+});
+
 test('a legacy record remains readable without invented provenance or changed bytes', async () => {
   const rootDir = await temporaryRoot();
   const sessionDir = join(rootDir, 'session-legacy');

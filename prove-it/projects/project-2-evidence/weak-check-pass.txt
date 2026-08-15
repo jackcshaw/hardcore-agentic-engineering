@@ -1,0 +1,11 @@
+Command: node --test test/session-record.test.mjs
+Candidate: project-2 commit 7ffc595, before the stronger test and fix
+
+✔ a new session preserves the exact seed used at session start
+✔ a legacy record remains readable without invented provenance or changed bytes
+✔ creating a session refuses to overwrite an existing academic record
+ℹ tests 3
+ℹ pass 3
+ℹ fail 0
+
+Exit: 0

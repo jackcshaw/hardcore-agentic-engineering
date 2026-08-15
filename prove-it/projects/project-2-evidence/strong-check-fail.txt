@@ -1,0 +1,24 @@
+Command: node --test test/session-record.test.mjs
+Candidate: existing implementation plus the concurrent-mutation test
+
+✔ a new session preserves the exact seed used at session start
+✖ a session captures its seed before the first asynchronous gap
+✔ a legacy record remains readable without invented provenance or changed bytes
+✔ creating a session refuses to overwrite an existing academic record
+ℹ tests 4
+ℹ pass 3
+ℹ fail 1
+
+Failure:
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+
+  actual case_text:
+  The assignment changed while the session record was being created.
+
+  expected case_text:
+  Rigorous research and writing improve strategic judgment.
+
+  at TestContext.<anonymous>
+  (<repo>/prove-it/working/test/session-record.test.mjs:69:10)
+
+Exit: 1

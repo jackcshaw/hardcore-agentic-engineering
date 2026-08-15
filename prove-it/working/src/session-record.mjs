@@ -3,6 +3,7 @@ import { join } from 'node:path';
 
 export async function createSessionRecord({ rootDir, sessionId, metadata, seed }) {
   const sessionDir = join(rootDir, sessionId);
+  const contents = `${JSON.stringify({ ...metadata, seed_snapshot: seed }, null, 2)}\n`;
 
   try {
     await mkdir(sessionDir);
@@ -13,12 +14,7 @@ export async function createSessionRecord({ rootDir, sessionId, metadata, seed }
     throw error;
   }
 
-  const record = {
-    ...metadata,
-    seed_snapshot: seed,
-  };
-
-  await writeFile(join(sessionDir, 'meta.json'), `${JSON.stringify(record, null, 2)}\n`);
+  await writeFile(join(sessionDir, 'meta.json'), contents);
 }
 
 export async function readSessionRecord({ rootDir, sessionId }) {

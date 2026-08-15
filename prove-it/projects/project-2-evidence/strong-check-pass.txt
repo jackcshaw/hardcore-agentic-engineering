@@ -1,0 +1,12 @@
+Command: node --test test/session-record.test.mjs
+Candidate: seed record serialized before the first asynchronous gap
+
+✔ a new session preserves the exact seed used at session start
+✔ a session captures its seed before the first asynchronous gap
+✔ a legacy record remains readable without invented provenance or changed bytes
+✔ creating a session refuses to overwrite an existing academic record
+ℹ tests 4
+ℹ pass 4
+ℹ fail 0
+
+Exit: 0
