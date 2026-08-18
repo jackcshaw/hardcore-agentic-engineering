@@ -51,7 +51,7 @@ Fill one entry the week you do the session.
 - New-submission rule: assign a new record identity; never overwrite the earlier record
 - Uncertain state: a missing or malformed `meta.json` after directory creation is `in_doubt`
 
-### S4 — Attack the gate → `<repo>`
+### S4 — Attack the check → `<repo>`
 
 - Task:
 - What transferred cleanly:
