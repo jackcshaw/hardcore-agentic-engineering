@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session 2 preflight</title>
+  <style>
+    :root { color-scheme:light; --ink:#18211d; --muted:#5f6d65; --paper:#f6f2e8; --card:#fffdf8; --line:#d6d0c2; --accent:#8a3151; --dark:#202a25; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.55 Georgia,serif; }
+    main { width:min(840px,calc(100% - 40px)); margin:64px auto 96px; }
+    h1,h2 { line-height:1.12; letter-spacing:-.025em; }
+    h1 { font-size:clamp(40px,7vw,68px); margin:0 0 16px; }
+    h2 { font-size:28px; margin:44px 0 14px; }
+    .kicker,.label { font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+    .lead { font-size:24px; max-width:720px; }
+    .status { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:28px 0; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; }
+    .card h3 { margin:8px 0 12px; font-size:22px; }
+    ol { padding-left:24px; }
+    li { margin:10px 0; }
+    .fact { border-left:4px solid var(--accent); padding:4px 0 4px 22px; margin:26px 0; font-size:22px; }
+    .exercise { background:var(--dark); color:#f8f3e8; border-radius:12px; padding:28px; margin-top:28px; }
+    .exercise .label { color:#ef9db9; }
+    a { color:var(--accent); }
+    code { font:15px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; background:#ebe5d8; padding:2px 5px; border-radius:4px; }
+    footer { margin-top:52px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:15px; }
+    @media(max-width:700px){ .status{grid-template-columns:1fr;} main{margin-top:36px;} }
+    @media print { body{background:white;} main{margin:24px auto;} }
+  </style>
+</head>
+<body>
+<main>
+  <div class="kicker">Week 1 · Session 2</div>
+  <h1>Preflight: brief and steer</h1>
+  <p class="lead">Today is about giving a fresh agent enough context to start cold, then correcting the first wrong premise before later work depends on it.</p>
+
+  <div class="status">
+    <section class="card">
+      <div class="label">Completed</div>
+      <h3>Foundation</h3>
+      <p>Setup is complete. The original task card is committed and frozen under <code>evidence/00-baseline/</code>. Session 1 is marked complete in Maven.</p>
+    </section>
+    <section class="card">
+      <div class="label">Still required</div>
+      <h3>Before class</h3>
+      <p>The revised Done Contract and Project 1 files do not yet exist. Chapter 2 still needs to be read, and the hidden repository fact needs to be carried into the rider.</p>
+    </section>
+  </div>
+
+  <h2>The Chapter 2 idea</h2>
+  <p>The contract fixes the result. The brief carries the repository truth and decisions needed to reach it. Split the brief into a short goal and a detailed rider. Watch the first tool action, then use the smallest correction that matches the problem: supply a fact, reject the plan, interrupt, or cancel and rebrief.</p>
+
+  <p class="fact"><strong>Your hidden fact:</strong> for this task, a GAiDFLY defense is invalid without both the fixed paper and its brief. The repository currently preserves a brief-only fallback, so a fresh agent cannot infer that this is legacy behavior rather than the desired result.</p>
+
+  <h2>Before 3 PM MDT</h2>
+  <ol>
+    <li>Read Chapter 2's required Course path. Stop when “Go deeper” begins.</li>
+    <li>Draft the eight-key Done Contract from the current task card, leaving uncertainty visible.</li>
+    <li>Attack it once. The likely exploit is that “student owns the resolution” has no independent oracle.</li>
+    <li>Revise only what the attack justifies. The original baseline stays untouched.</li>
+    <li>Bring the hidden fact above and its stop condition into Session 2.</li>
+  </ol>
+
+  <section class="exercise">
+    <div class="label">Retrieval check</div>
+    <p><strong>Why does the mandatory-paper decision belong in the rider, while the requirement that the run refuse without the paper belongs in the contract?</strong></p>
+  </section>
+
+  <footer>
+    Primary source: <a href="https://hardcoreagentic.com/course/reader/02-brief-steer.html">Chapter 2 · Brief and steer a durable run</a>. Session page: <a href="https://maven.com/specstory/hardcore-agentic-engineering-for-builders-who-ship/1/syllabus/modules/32437d/48lyoltbmi">Session 2 in Maven</a>. Local guide: <a href="../prove-it/sessions/s2-brief-steer/README.md">Session 2 README</a>. Ask the agent about anything that remains unclear.
+  </footer>
+</main>
+</body>
+</html>

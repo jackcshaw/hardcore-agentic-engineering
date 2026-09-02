@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contract check selection</title>
+  <style>
+    :root { --ink:#18211d; --muted:#5f6d65; --paper:#f6f2e8; --card:#fffdf8; --line:#d6d0c2; --accent:#a44422; --dark:#243e67; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.5 Georgia,serif; }
+    main { width:min(1020px,calc(100% - 40px)); margin:56px auto 88px; }
+    h1,h2 { line-height:1.12; letter-spacing:-.025em; }
+    h1 { font-size:clamp(40px,7vw,66px); margin:0 0 14px; }
+    h2 { font-size:28px; margin:42px 0 12px; }
+    .kicker,.label { font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.11em; text-transform:uppercase; color:var(--accent); }
+    .lead { font-size:23px; max-width:800px; }
+    table { width:100%; border-collapse:collapse; margin:32px 0; background:var(--card); }
+    th,td { padding:15px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { font:700 12px ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.06em; }
+    td:first-child { color:var(--accent); font:700 16px ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .rule { padding:24px 28px; border-radius:12px; background:var(--dark); color:#f7f2e7; font-size:21px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-top:22px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px; }
+    .card h3 { margin:8px 0; font-size:21px; }
+    ol,ul { padding-left:22px; }
+    li { margin:8px 0; }
+    a { color:var(--accent); }
+    footer { margin-top:48px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:15px; }
+    @media(max-width:780px){ .grid{grid-template-columns:1fr;} main{margin-top:34px;} table{font-size:15px;} th,td{padding:10px;} }
+  </style>
+</head>
+<body>
+<main>
+  <div class="kicker">Done Contract reference</div>
+  <h1>Match the check to the failure</h1>
+  <p class="lead">A check is useful when it observes the kind of thing that could actually go wrong. Every check also leaves a blind spot that belongs in the contract or release decision.</p>
+
+  <table>
+    <thead><tr><th>Work</th><th>Useful evidence</th><th>Remaining blind spot</th></tr></thead>
+    <tbody>
+      <tr><td>Pure function</td><td>Examples, properties, edge cases</td><td>The cases never named</td></tr>
+      <tr><td>Data pipeline</td><td>Invariants, reconciliation, historical holdouts</td><td>A biased or incomplete reference set</td></tr>
+      <tr><td>Service</td><td>Contract tests, runtime probes, failure injection</td><td>Production conditions the test did not reproduce</td></tr>
+      <tr><td>Interface</td><td>Accessibility checks, screenshots, interaction traces</td><td>Taste, clarity and user context</td></tr>
+      <tr><td>Code quality</td><td>Static checks, focused independent audit, critical-seam review</td><td>Maintainability outside the review rubric</td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule"><strong>Risk sets review depth.</strong> A low-risk tool may be tested by using it. Inspect security, money, identity, tenancy and irreversible effects closely.</div>
+
+  <h2>Use this when drafting a contract</h2>
+  <ol>
+    <li>Name the concrete failure before choosing a check.</li>
+    <li>Identify which work surfaces the failure crosses; one task may need several rows.</li>
+    <li>Choose evidence that can observe that failure independently of the worker's claim.</li>
+    <li>State the remaining blind spot explicitly.</li>
+    <li>Increase review depth when blast radius or irreversibility is high.</li>
+  </ol>
+
+  <h2>Applied to the GAiDFLY Prove-It</h2>
+  <div class="grid">
+    <section class="card">
+      <div class="label">Data</div>
+      <h3>Historical truth</h3>
+      <p>Assert snapshot and transcript invariants, reconcile stored records, and exercise an existing database rather than only a fresh fixture.</p>
+    </section>
+    <section class="card">
+      <div class="label">Service</div>
+      <h3>Behavior and failure</h3>
+      <p>Use API contract tests and inject assignment edits, transcript rewrites, cross-tenant access and migration failure.</p>
+    </section>
+    <section class="card">
+      <div class="label">Critical seam</div>
+      <h3>Independent review</h3>
+      <p>Review authorization and migration code separately because the task touches identity, tenancy and potentially irreversible academic records.</p>
+    </section>
+  </div>
+  <p><strong>Not in this contract:</strong> interface screenshots and judgments about conversation quality. They do not observe the failure this software slice is meant to prevent.</p>
+
+  <footer>
+    Primary source: <a href="https://hardcoreagentic.com/course/slides/session-1-clarity-check.html">Session 1 clarity check</a>. Related: <a href="../lessons/0006-two-real-prove-it-candidates.html">selected Prove-It task</a>. Ask the agent whenever the correct evidence type or remaining blind spot is unclear.
+  </footer>
+</main>
+</body>
+</html>

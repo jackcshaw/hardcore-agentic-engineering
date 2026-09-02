@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interrogate the Prove It task</title>
+  <style>
+    :root { color-scheme:light; --ink:#18211d; --muted:#5f6d65; --paper:#f6f2e8; --card:#fffdf8; --line:#d6d0c2; --accent:#8a3151; --dark:#202a25; --good:#245d45; --warn:#8a5b22; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.55 Georgia,serif; }
+    main { width:min(900px,calc(100% - 40px)); margin:64px auto 96px; }
+    h1,h2 { line-height:1.12; letter-spacing:-.025em; }
+    h1 { font-size:clamp(40px,7vw,68px); margin:0 0 16px; }
+    h2 { font-size:28px; margin:46px 0 14px; }
+    .kicker,.label { font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+    .lead { font-size:24px; max-width:760px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:28px 0; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; }
+    .card h3 { margin:8px 0 12px; font-size:23px; }
+    .score { font:700 13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .high { color:var(--good); } .risk { color:var(--warn); }
+    table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); }
+    th,td { text-align:left; vertical-align:top; padding:12px 14px; border-bottom:1px solid var(--line); }
+    th { font:700 12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.06em; }
+    .rule { border-left:4px solid var(--accent); padding:4px 0 4px 22px; margin:26px 0; font-size:23px; }
+    .exercise { background:var(--dark); color:#f8f3e8; border-radius:12px; padding:28px; margin-top:30px; }
+    .exercise .label { color:#ef9db9; }
+    a { color:var(--accent); }
+    footer { margin-top:52px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:15px; }
+    @media(max-width:720px){ .grid{grid-template-columns:1fr;} main{margin-top:36px;} table{font-size:15px;} }
+    @media print { body{background:white;} main{margin:24px auto;} .card{break-inside:avoid;} }
+  </style>
+</head>
+<body>
+<main>
+  <div class="kicker">Lesson 3 · Choose the oracle</div>
+  <h1>Interrogate the Prove It task</h1>
+  <p class="lead">A valuable product question is not automatically a good verification task. The task needs an oracle we can defend.</p>
+
+  <div class="grid">
+    <section class="card">
+      <div class="label">Candidate A</div>
+      <h3>Judge reasoning provenance</h3>
+      <p>Catch when GAiDFLY introduces an idea that the debrief later attributes to the student.</p>
+      <p class="score high">PRODUCT RELEVANCE: HIGH</p>
+      <p class="score risk">ORACLE STRENGTH: LOW TODAY</p>
+      <p>The checker must decide whether two differently worded ideas are materially the same. A deterministic matcher misses paraphrases; another model judge reintroduces drift.</p>
+    </section>
+    <section class="card">
+      <div class="label">Candidate B</div>
+      <h3>Bind the evidence surface</h3>
+      <p>Require the exact paper and brief, bind the debrief to the exact transcript, and refuse missing or changed inputs.</p>
+      <p class="score high">PRODUCT RELEVANCE: MEDIUM-HIGH</p>
+      <p class="score high">ORACLE STRENGTH: HIGH</p>
+      <p>Hashes, required files, speaker turns, and refusal states are independently checkable. This creates trustworthy evidence for later human provenance review.</p>
+    </section>
+  </div>
+
+  <h2>Attack Candidate A</h2>
+  <table>
+    <thead><tr><th>Attack</th><th>Cheapest false pass</th></tr></thead>
+    <tbody>
+      <tr><td>Already green</td><td>Assert that the prompt contains “never attribute GAiDFLY contributions” without testing a debrief result.</td></tr>
+      <tr><td>Fixture overfit</td><td>Recognize the visible examples or exact repeated phrases while missing paraphrased adoption.</td></tr>
+      <tr><td>Case omission</td><td>Test obvious copying but omit embedded-answer questions, hints, student extensions, and paper-derived ideas.</td></tr>
+      <tr><td>Checker weakness</td><td>Verify that turn references exist without checking whether they support the provenance claim.</td></tr>
+      <tr><td>Nondeterminism</td><td>Pass once under a model judge even though repeated runs disagree.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="rule">Candidate A becomes strong only after we have a credible oracle. Building that oracle may be the research project, not the first harness exercise.</p>
+
+  <h2>Attack Candidate B</h2>
+  <table>
+    <thead><tr><th>Attack</th><th>Check that closes it</th></tr></thead>
+    <tbody>
+      <tr><td>Brief without paper</td><td>Defense seed is unavailable unless both inputs parse successfully.</td></tr>
+      <tr><td>Paper changed later</td><td>Session stores the source hash; debrief refuses a mismatch.</td></tr>
+      <tr><td>Transcript resubmitted</td><td>First saved transcript becomes immutable; later mismatched turns are refused.</td></tr>
+      <tr><td>Debrief from wrong session</td><td>Evidence records and validates session, source, brief, and transcript identities.</td></tr>
+      <tr><td>Sensitive source copied</td><td>Artifacts retain source identity and resolvable references without copying the paper.</td></tr>
+    </tbody>
+  </table>
+
+  <section class="exercise">
+    <div class="label">Decision question</div>
+    <p><strong>If the course left you with incontrovertible proof that every GAiDFLY defense and debrief used the exact intended paper, brief, and transcript—but did not yet automate reasoning provenance—would that feel like meaningful progress or like a retreat from the problem you care about?</strong></p>
+  </section>
+
+  <footer>
+    Primary source: <a href="https://hardcoreagentic.com/course/reader/01-define-done.html">Define done before the run</a>. Product sources: <a href="file:///Users/jackcshaw-2/dev/comprendo-clients/gaidfly/tests/test_seeds.py">defense-source tests</a> · <a href="file:///Users/jackcshaw-2/dev/comprendo-clients/gaidfly/gaidfly/debrief.py">debrief pipeline</a> · <a href="file:///Users/jackcshaw-2/dev/comprendo-clients/gaidfly/docs/method.md">GAiDFLY method</a>. Ask the agent about anything that remains unclear.
+  </footer>
+</main>
+</body>
+</html>

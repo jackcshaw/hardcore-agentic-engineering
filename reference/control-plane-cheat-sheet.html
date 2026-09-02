@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control plane — one-page reference</title>
+  <style>
+    :root { --paper:#f7f3e9; --ink:#17201c; --muted:#5f6a64; --line:#d6d0c2; --card:#fffdf8; --accent:#9b4328; --blue:#315e70; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.48 Georgia,serif; }
+    main { width:min(980px,calc(100% - 40px)); margin:52px auto 72px; }
+    h1,h2 { line-height:1.1; letter-spacing:-.025em; }
+    h1 { margin:0 0 12px; font-size:clamp(38px,6vw,60px); }
+    h2 { margin:0 0 12px; font-size:25px; }
+    .kicker,.label { font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.11em; text-transform:uppercase; color:var(--accent); }
+    .lead { max-width:760px; font-size:22px; }
+    .flow { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin:30px 0; }
+    .flow div { min-height:82px; padding:12px 10px; border:1px solid var(--line); border-radius:10px; background:var(--card); text-align:center; }
+    .flow span { display:block; color:var(--muted); font-size:13px; margin-top:7px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:22px 0; }
+    .card { padding:24px; background:var(--card); border:1px solid var(--line); border-radius:12px; }
+    table { width:100%; border-collapse:collapse; background:var(--card); margin:22px 0; }
+    th,td { padding:11px 13px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { font:700 12px ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.06em; }
+    code { font:15px ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .rule { padding:21px 24px; border-left:5px solid var(--blue); background:#eaf0f1; font-size:21px; }
+    ul { padding-left:22px; margin-bottom:0; }
+    li { margin:7px 0; }
+    a { color:var(--accent); }
+    footer { margin-top:34px; color:var(--muted); font-size:14px; }
+    @media(max-width:760px){ .flow{grid-template-columns:1fr 1fr;} .grid{grid-template-columns:1fr;} }
+    @media print { body{background:#fff;} main{margin:24px auto;} .card,.flow div,table{background:#fff;} }
+  </style>
+</head>
+<body>
+<main>
+  <div class="kicker">Session 3 · Operate</div>
+  <h1>The control plane</h1>
+  <p class="lead">The model proposes an action. The control plane decides whether and how the world changes—and preserves enough truth to recover when the answer disappears.</p>
+
+  <div class="flow" aria-label="The model-to-action boundary">
+    <div><strong>Request</strong><span>What is being asked?</span></div>
+    <div><strong>Policy</strong><span>Allow, ask, or refuse?</span></div>
+    <div><strong>Action</strong><span>What actually ran?</span></div>
+    <div><strong>Observation</strong><span>What came back?</span></div>
+    <div><strong>Event</strong><span>What survived on disk?</span></div>
+    <div><strong>Reconcile</strong><span>What does the world prove?</span></div>
+  </div>
+
+  <p class="rule"><strong>The key distinction:</strong> “the tool did not answer” is a fact about the observation channel. It is not evidence that the action did not happen.</p>
+
+  <div class="grid">
+    <section class="card">
+      <div class="label">When resuming</div>
+      <h2>Do not guess</h2>
+      <ol>
+        <li>Find the durable intent and stable request ID.</li>
+        <li>Inspect evidence outside the model’s story.</li>
+        <li>Record <code>ok</code>, <code>failed</code>, or <code>in_doubt</code>.</li>
+        <li>Retry only when replay is safe and adds evidence.</li>
+      </ol>
+    </section>
+    <section class="card">
+      <div class="label">Before acting</div>
+      <h2>Make recovery possible</h2>
+      <ul>
+        <li>Record intent before the side effect.</li>
+        <li>Give the intent one ID that survives retries.</li>
+        <li>Keep complete output as an artifact; return a bounded observation.</li>
+        <li>Ask for approval at the consequential action, not just at plan time.</li>
+      </ul>
+    </section>
+  </div>
+
+  <table>
+    <thead><tr><th>Status</th><th>What it means</th><th>What happens next</th></tr></thead>
+    <tbody>
+      <tr><td><code>ok</code></td><td>Independent evidence shows the intended effect landed.</td><td>Record the evidence and continue.</td></tr>
+      <tr><td><code>failed</code></td><td>Evidence shows the intended effect did not land.</td><td>Retry only if the result says replay is safe.</td></tr>
+      <tr><td><code>in_doubt</code></td><td>Evidence cannot settle whether the effect landed.</td><td>Stop, reconcile further, compensate, or escalate.</td></tr>
+      <tr><td><code>refused</code></td><td>Policy blocked the action deliberately.</td><td>Follow the named alternative; do not retry the wall.</td></tr>
+      <tr><td><code>pending</code></td><td>The action is waiting for a decision or approval.</td><td>Preserve the request; do not silently execute it.</td></tr>
+    </tbody>
+  </table>
+
+  <section class="card">
+    <div class="label">Jack’s Project 1 crash window</div>
+    <h2><code>mkdir</code> succeeds; <code>writeFile</code> never happens</h2>
+    <p>The session directory exists, but the evidence record does not. Retrying with the same <code>sessionId</code> is refused because the directory already exists. Directory existence is therefore not proof that record creation succeeded.</p>
+    <p><strong>Stable request ID:</strong> the logical <code>sessionId</code>. <strong>Evidence:</strong> a present, parseable <code>meta.json</code> containing the fixed snapshot. <strong>Missing control:</strong> reconciliation or an atomic commit strategy.</p>
+  </section>
+
+  <footer>
+    Primary source: <a href="https://hardcoreagentic.com/course/reader/03-control-plane.html">Chapter 3 · Build the control plane</a>. Course exercise: <a href="../prove-it/sessions/s3-control-plane/README.md">Session 3 guide</a>. Personalized code boundary: <a href="../prove-it/working/src/session-record.mjs">session-record.mjs</a>.
+  </footer>
+</main>
+</body>
+</html>

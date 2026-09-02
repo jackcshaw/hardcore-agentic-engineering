@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session 3 crash course — Build the control plane</title>
+  <style>
+    :root { --paper:#f7f3e9; --ink:#17201c; --muted:#5e6963; --line:#d6d0c2; --card:#fffdf8; --accent:#9b4328; --dark:#1c2823; --green:#2f6450; --gold:#bd7c1d; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.55 Georgia,serif; }
+    main { width:min(980px,calc(100% - 40px)); margin:56px auto 90px; }
+    h1,h2,h3 { line-height:1.12; letter-spacing:-.025em; }
+    h1 { margin:0 0 14px; font-size:clamp(42px,7vw,70px); }
+    h2 { margin:0 0 12px; font-size:30px; }
+    h3 { margin:20px 0 7px; font-size:21px; }
+    .kicker,.label { font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.11em; text-transform:uppercase; color:var(--accent); }
+    .lead { max-width:840px; font-size:24px; }
+    .time { color:var(--green); font-weight:bold; }
+    .now { padding:27px; margin:32px 0; border:2px solid var(--green); border-radius:14px; background:#eef4ed; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:24px 0; }
+    .card { padding:25px; background:var(--card); border:1px solid var(--line); border-radius:13px; }
+    .sequence { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; margin:24px 0; }
+    .step { padding:20px; background:var(--card); border-top:5px solid var(--gold); border-radius:9px; }
+    .step strong { display:block; margin-bottom:7px; }
+    .case { background:var(--dark); color:#f8f3e8; border-radius:14px; padding:28px; margin:30px 0; }
+    .case .label { color:#e8a470; }
+    code { font:15px ui-monospace,SFMono-Regular,Menlo,monospace; }
+    pre { overflow:auto; padding:17px; border-radius:9px; background:#101914; color:#f5efe3; font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    ul,ol { padding-left:23px; }
+    li { margin:8px 0; }
+    details { margin:12px 0; padding:16px 18px; background:var(--card); border:1px solid var(--line); border-radius:10px; }
+    summary { cursor:pointer; font-weight:bold; }
+    a { color:var(--accent); }
+    .case a { color:#ffc394; }
+    footer { margin-top:44px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    @media(max-width:760px){ .grid,.sequence{grid-template-columns:1fr;} main{margin-top:34px;} }
+    @media print { body{background:#fff;} main{margin:24px auto;} .card,.step,.now{background:#fff;} }
+  </style>
+</head>
+<body>
+<main>
+  <div class="kicker">Hardcore Agentic Engineering · Session 3 · Today</div>
+  <h1>Build the control plane.</h1>
+  <p class="lead">Today’s lecture asks one operator question: <strong>when a consequential action may have happened but its result was never recorded, what may the run honestly do next?</strong></p>
+  <p class="time">Live: Tuesday 11 August, 5–7pm ET / 3–5pm Mountain.</p>
+
+  <section class="now">
+    <div class="label">If you have 15 minutes</div>
+    <h2>Do only this</h2>
+    <ol>
+      <li><strong>5 minutes:</strong> learn the six-step path below and the meaning of <code>in_doubt</code>.</li>
+      <li><strong>4 minutes:</strong> open your <a href="../prove-it/projects/project-1-evidence/worker-agent-log.md">Project 1 worker log</a>. Lines 15–23 are the failure trace you can bring.</li>
+      <li><strong>4 minutes:</strong> inspect your <a href="../prove-it/working/src/session-record.mjs">session-record implementation</a>. Notice the crash window between <code>mkdir</code> and <code>writeFile</code>.</li>
+      <li><strong>2 minutes:</strong> write this on paper: <em>sessionId is the stable request ID; a valid meta.json is the external evidence.</em></li>
+    </ol>
+    <p>That is sufficient preparation. The live comparison is designed to be run during class.</p>
+  </section>
+
+  <section>
+    <div class="label">The whole lecture in one path</div>
+    <h2>Request → policy → action → observation → event → reconcile</h2>
+    <div class="sequence">
+      <div class="step"><strong>Before action</strong>Validate the request. Decide allow, ask, or refuse. Record the intent and its stable ID.</div>
+      <div class="step"><strong>During action</strong>Run inside the actual authority and containment boundary. Treat output as untrusted and bounded.</div>
+      <div class="step"><strong>After uncertainty</strong>Read the world. Record what the evidence supports. Never let the model fill the gap with a story.</div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <div class="label">The failure</div>
+      <h2>A missing answer hides a real effect</h2>
+      <p>A payment, message, deploy, or file write succeeds. The process crashes before recording the result. The log says only that the action was requested.</p>
+      <p>A blind retry may perform the effect twice. Giving up may leave the world half-changed.</p>
+    </section>
+    <section class="card">
+      <div class="label">The capability</div>
+      <h2>Evidence-first recovery</h2>
+      <p>Preserve intent before acting. Reuse the same request identity after a crash. Inspect an independent ledger or state surface. Then record <code>ok</code>, <code>failed</code>, or <code>in_doubt</code>.</p>
+    </section>
+  </div>
+
+  <section class="case">
+    <div class="label">Your Project 1, not a hypothetical</div>
+    <h2>The session-record action can half-happen</h2>
+    <pre>await mkdir(sessionDir);              // the world has changed
+// process crashes here
+await writeFile("meta.json", ...);   // the evidence record never lands</pre>
+    <p>On resume, the directory exists, so the same request is refused as “already exists.” But no <code>meta.json</code> proves the record was created. The current contract never exercises this crash window.</p>
+    <p><strong>Stable request ID:</strong> <code>sessionId</code>—the identity of the logical creation request, not a fresh attempt ID.</p>
+    <p><strong>Evidence to read:</strong> whether <code>meta.json</code> exists, parses, and contains the fixed seed snapshot.</p>
+    <p><strong>Honest decision:</strong> complete valid file → <code>ok</code>; known empty partial directory → <code>failed</code> plus deliberate recovery; evidence cannot settle it → <code>in_doubt</code>.</p>
+    <p><strong>Missing control:</strong> a reconciliation path or atomic commit strategy. This is a strong candidate for “the moment the run became uncertain” in Project 2.</p>
+  </section>
+
+  <section>
+    <div class="label">What the two-hour session will do</div>
+    <h2>See, predict, decide, try, debrief, apply</h2>
+    <ol>
+      <li><strong>See:</strong> a simulated payment lands, but the result event does not.</li>
+      <li><strong>Predict:</strong> decide what resume should do before seeing the recovery.</li>
+      <li><strong>Compare:</strong> blind retry creates two payments; evidence-first recovery reads the ledger.</li>
+      <li><strong>Decide:</strong> because the ledger shows one matching payment, the operator may record <code>ok</code>.</li>
+      <li><strong>Try:</strong> run <code>bash scripts/demo-compare.sh s3 --mock</code> once and write one stable request ID.</li>
+      <li><strong>Apply:</strong> add one sentence to Project 2: uncertain moment, evidence read, control chosen, and why.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="label">Active recall · answer before opening</div>
+    <h2>Three checks on your understanding</h2>
+    <details>
+      <summary>The tool timed out. Did the action fail?</summary>
+      <p>You do not know. The timeout describes the observation channel. The effect may have landed. Preserve <code>in_doubt</code> until external evidence settles it.</p>
+    </details>
+    <details>
+      <summary>Why is a fresh UUID on every retry not an idempotency key?</summary>
+      <p>It identifies each attempt as a new request. A safe retry must carry the same identity as the original intent so the receiver can recognize it as replay.</p>
+    </details>
+    <details>
+      <summary>What is the control plane in plain English?</summary>
+      <p>Everything between the model asking and the world changing: validation, policy, approval, execution, observation, durable state, and recovery.</p>
+    </details>
+  </section>
+
+  <section class="card">
+    <div class="label">What to bring</div>
+    <h2>Your ready-made failure trace</h2>
+    <p>Bring <a href="../prove-it/projects/project-1-evidence/worker-agent-log.md">worker-agent-log.md</a>, lines 15–23. The first chained tool action stopped when the repository-instruction search returned no file. That trace is useful because one high-level “command failed” could obscure which sub-actions ran and which did not—the exact observation problem the lecture addresses.</p>
+    <p>If asked for a consequential action from your own task, use the session-record crash window above.</p>
+  </section>
+
+  <footer>
+    Primary source: <a href="https://hardcoreagentic.com/course/reader/03-control-plane.html">Chapter 3 · Build the control plane</a>. Live deck: <a href="https://hardcoreagentic.com/course/slides/session-3.html">Session 3</a>. Course exercise: <a href="../prove-it/sessions/s3-control-plane/README.md">Session 3 guide</a>. Keep the compact version open: <a href="../reference/control-plane-cheat-sheet.html">control-plane cheat sheet</a>. Ask follow-up questions here whenever a distinction is unclear.
+  </footer>
+</main>
+</body>
+</html>

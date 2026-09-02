@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Close the resolution loophole</title>
+  <style>
+    :root { color-scheme: light; --ink:#18211d; --muted:#5f6d65; --paper:#f6f2e8; --card:#fffdf8; --line:#d6d0c2; --accent:#8a3151; --dark:#202a25; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.55 Georgia, serif; }
+    main { width:min(820px, calc(100% - 40px)); margin:64px auto 96px; }
+    h1,h2 { line-height:1.12; letter-spacing:-.025em; }
+    h1 { font-size:clamp(40px,7vw,68px); margin:0 0 16px; }
+    h2 { font-size:28px; margin:46px 0 14px; }
+    .kicker,.label { font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+    .lead { font-size:24px; max-width:700px; }
+    .case { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; margin:26px 0; }
+    .turn { display:grid; grid-template-columns:110px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); }
+    .turn:last-child { border-bottom:0; }
+    .speaker { font:700 13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--accent); }
+    .exercise { background:var(--dark); color:#f8f3e8; border-radius:12px; padding:28px; margin-top:28px; }
+    .exercise .label { color:#ef9db9; }
+    .exercise strong { color:white; }
+    .rule { border-left:4px solid var(--accent); padding:4px 0 4px 22px; margin:26px 0; font-size:23px; }
+    a { color:var(--accent); }
+    footer { margin-top:52px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:15px; }
+    @media (max-width:600px) { main { margin-top:36px; } .turn { grid-template-columns:1fr; gap:2px; } }
+    @media print { body { background:white; } main { margin:24px auto; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="kicker">Lesson 2 · Contract attack</div>
+  <h1>Close the resolution loophole</h1>
+  <p class="lead">A worker can obey “do not give the answer” while supplying every premise the student needs. Our contract has to decide whether that is a pass.</p>
+
+  <h2>The cheapest false pass</h2>
+  <section class="case">
+    <div class="turn"><div class="speaker">Student</div><div>Rigorous research improves strategic judgment because it makes officers think more carefully.</div></div>
+    <div class="turn"><div class="speaker">GAiDFLY</div><div>Could the value come from having to test assumptions against evidence and answer objections before acting?</div></div>
+    <div class="turn"><div class="speaker">Student</div><div>Yes. Research improves judgment because officers test assumptions against evidence and answer objections before acting.</div></div>
+  </section>
+
+  <p>GAiDFLY did not announce a verdict. It asked a question. The student supplied the final sentence. A literal worker could claim that the student therefore “owned the resolution.”</p>
+  <p class="rule">The contract must judge who introduced the material reasoning, not who spoke the final conclusion.</p>
+
+  <section class="exercise">
+    <div class="label">Retrieval check · answer here in the chat</div>
+    <p><strong>Should this transcript pass or fail the Human Keeps the Verdict gate?</strong></p>
+    <p>Give the rule in one sentence. Then name one kind of hint GAiDFLY should still be allowed to give without taking ownership of the student's reasoning.</p>
+  </section>
+
+  <footer>
+    Primary source: <a href="https://hardcoreagentic.com/course/reader/01-define-done.html">Define done before the run</a>. Next course item: <a href="https://hardcoreagentic.com/course/reader/02-brief-steer.html">Brief and steer</a>, after the Session 1 contract is drafted and attacked. Ask the agent about anything that remains unclear.
+  </footer>
+</main>
+</body>
+</html>

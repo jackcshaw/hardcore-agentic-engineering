@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From product quality to a gate</title>
+  <style>
+    :root { color-scheme: light; --ink:#18211d; --muted:#5f6d65; --paper:#f6f2e8; --card:#fffdf8; --line:#d6d0c2; --accent:#8a3151; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.55 Georgia, serif; }
+    main { width:min(860px, calc(100% - 40px)); margin:64px auto 96px; }
+    h1,h2 { line-height:1.12; letter-spacing:-.025em; }
+    h1 { font-size:clamp(40px,7vw,72px); margin:0 0 16px; }
+    h2 { font-size:28px; margin:48px 0 14px; }
+    .kicker, .label { font:700 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+    .lead { font-size:24px; max-width:700px; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:28px 0; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px; }
+    .card h3 { margin:8px 0; font-size:21px; }
+    blockquote { margin:28px 0; padding:4px 0 4px 24px; border-left:4px solid var(--accent); font-size:24px; }
+    code { font:15px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background:#ebe5d8; padding:2px 5px; border-radius:4px; }
+    ol { padding-left:24px; }
+    li { margin:10px 0; }
+    .exercise { background:#202a25; color:#f8f3e8; border-radius:12px; padding:28px; margin-top:24px; }
+    .exercise .label { color:#ef9db9; }
+    .exercise strong { color:#fff; }
+    a { color:var(--accent); }
+    footer { margin-top:54px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:15px; }
+    @media (max-width:720px) { .grid { grid-template-columns:1fr; } main { margin-top:36px; } }
+    @media print { body { background:white; } main { margin:24px auto; } .card { break-inside:avoid; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="kicker">Lesson 1 · Define</div>
+  <h1>From product quality to a gate</h1>
+  <p class="lead">A larger test set does not rescue a test that measures the wrong thing. Application quality needs three decisions before the run.</p>
+
+  <div class="grid">
+    <section class="card">
+      <div class="label">1 · Claim</div>
+      <h3>What must change?</h3>
+      <p>Name an observable product behavior without prescribing the implementation.</p>
+    </section>
+    <section class="card">
+      <div class="label">2 · Instrument</div>
+      <h3>What would reveal it?</h3>
+      <p>Choose evidence that represents the behavior—not merely activity or compliance.</p>
+    </section>
+    <section class="card">
+      <div class="label">3 · Sample</div>
+      <h3>Where must it hold?</h3>
+      <p>Use cases the worker did not tune against, including one consequential failure case.</p>
+    </section>
+  </div>
+
+  <h2>GAiDFLY already contains both layers</h2>
+  <p>The existing 13-check transcript rubric tests <strong>process fidelity</strong>: turn discipline, responsiveness, concessions, closing sequence, no verdict, and other method requirements. That can establish that GAiDFLY behaved according to its method.</p>
+  <p>The same method document names the remaining gap: the rubric does not yet establish the <strong>product outcome</strong>—for example, whether the student's position became better tested or whether development sparring produced genuinely new material.</p>
+  <blockquote>Perfect process fidelity can coexist with a session that did not help the student think.</blockquote>
+
+  <h2>A plausible real-repo task</h2>
+  <p><strong>Improve development sparring so abstract student claims are pressed toward concrete anchors without turning GAiDFLY into a tutor.</strong></p>
+  <p>A contract for that task might combine:</p>
+  <ol>
+    <li><strong>Behavior:</strong> after an abstract claim lacking an example, GAiDFLY requests or introduces a relevant concrete anchor within two turns.</li>
+    <li><strong>Method invariants:</strong> T1 turn discipline, T3 responsiveness, T8 no verdict, and T13 turn shape must remain green.</li>
+    <li><strong>Blind cases:</strong> held-out theses from several domains, including cases where the student already supplied a good example and GAiDFLY should not ask redundantly.</li>
+    <li><strong>Evidence:</strong> an independent reviewer cites the exact transcript turns supporting every pass or failure.</li>
+    <li><strong>Protected surfaces:</strong> the scenarios, judging rubric, thresholds, and <code>docs/method.md</code> stay outside the worker's write authority.</li>
+    <li><strong>Residual doubt:</strong> synthetic sessions and transcript judgments still do not prove that real students learn more.</li>
+  </ol>
+
+  <section class="exercise">
+    <div class="label">Your turn · five minutes</div>
+    <p>Complete this without using “good,” “better,” or “sufficient”:</p>
+    <p><strong>When a student ________, GAiDFLY will ________ within ________. I will observe this in ________. The most dangerous false pass is ________. Even a passing receipt will not prove ________.</strong></p>
+  </section>
+
+  <footer>
+    Primary source: <a href="https://hardcoreagentic.com/course/reader/01-define-done.html">Define done before the run</a>. Local sources: <a href="file:///Users/jackcshaw-2/dev/comprendo-clients/gaidfly/docs/method.md">GAiDFLY method and transcript rubric</a> · <a href="../MISSION.md">learning mission</a>. Ask the agent about anything that remains unclear.
+  </footer>
+</main>
+</body>
+</html>
